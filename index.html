@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Matemáticas</title>
+    <link id="background-style" rel="stylesheet" href="https://i.ibb.co/mtKZHyv/20240907-230211-0000.png">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .score {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .feedback {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .number-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .number-buttons button {
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">Juego de Matemáticas</div>
+
+    <div class="game-container">
+        <div class="score" id="score">Puntuación: 0</div>
+        <div class="question" id="question">¿Cuánto es 12 + 8?</div>
+        <div class="input-container">
+            <input type="number" id="answer" placeholder="Escribe tu respuesta" readonly>
+        </div>
+        <button onclick="checkAnswer()">Responder</button>
+        <div class="feedback" id="feedback"></div>
+
+        <div class="number-buttons">
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(0)">0</button>
+        </div>
+    </div>
+
+    <script>
+        const questionElement = document.getElementById('question');
+        const answerInput = document.getElementById('answer');
+        const scoreElement = document.getElementById('score');
+        const feedbackElement = document.getElementById('feedback');
+
+        let score = 0;
+        let correctAnswer;
+
+        const generateQuestion = () => {
+            const isEasy = Math.random() > 0.5;
+            const num1 = isEasy ? Math.floor(Math.random() * 90) + 10 : Math.floor(Math.random() * 900) + 100;
+            const num2 = isEasy ? Math.floor(Math.random() * 90) + 10 : Math.floor(Math.random() * 900) + 100;
+            correctAnswer = num1 + num2;
+            questionElement.textContent = `¿Cuánto es ${num1} + ${num2}?`;
+        };
+
+        const checkAnswer = () => {
+            const userAnswer = parseInt(answerInput.value, 10);
+            if (userAnswer === correctAnswer) {
+                score += 10;
+                feedbackElement.textContent = '¡Correcto!';
+                feedbackElement.style.color = 'green';
+            } else {
+                feedbackElement.textContent = 'Incorrecto. Intenta de nuevo.';
+                feedbackElement.style.color = 'red';
+            }
+            scoreElement.textContent = 'Puntuación: ' + score;
+            answerInput.value = '';
+            generateQuestion();
+        };
+
+        const appendNumber = (num) => {
+            answerInput.value += num;
+        };
+
+        const changeBackground = (url) => {
+            document.getElementById('background-style').href = url;
+        };
+
+        // Inicializar el juego
+        generateQuestion();
+    </script>
+
+</body>
+</html>
